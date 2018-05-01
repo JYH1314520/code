@@ -592,7 +592,7 @@
                     if (top.sessionExpiredLogin) {
                         top.sessionExpiredLogin();
                     } else {
-                        top.location.href = _basePath + '/login';
+                        top.location.href = _basePath + '/login/';
                     }
                     break;
                 case 'sys_access_denied':

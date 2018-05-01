@@ -9,7 +9,7 @@ def index(request):
      if request.session.get('username',default=None):
          return render(request, 'main/index.html')
      else:
-         return render(request, 'login/login.html')
+         return redirect("/login/")
 
 def page_not_found(request):
     return render(request, '404.html')

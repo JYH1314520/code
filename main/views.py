@@ -122,6 +122,10 @@ def getfunction(request):
             "icon": "&#xe613;",
             "href": "/user/user_user_fun/",
             "spread": False},
+        {"title": "功能定义",
+         "icon": "&#xe613;",
+         "href": "/fnd/functionset/",
+         "spread": False},
 		{
 			"title" : "二级菜单2",
 			"icon" : "&#xe631;",

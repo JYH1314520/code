@@ -21,14 +21,8 @@ from  .views import *
 
 
 urlpatterns = [
-    # url(r'^admin/', admin.site.urls),
-    # url(r'^login/', login),
-    # url(r'^index/', index),
-    url(r'^login/', login),
-    # url(r'^index/', index),
-    # url(r'^head/', head,name="web_head"),
-    # url(r'^left/', left,name="web_left"),
-    # url(r'^main/', main,name="web_main"),
-    # url(r'^grid_query/', grid_query,name="grid_query"),
+
+    url(r'^login/', loginpost, name="loginpost"),
+    url(r'^$', login, name="login"),
 
 ]

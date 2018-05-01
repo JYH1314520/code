@@ -27,10 +27,11 @@ class LoginView(generic.ListView):
     def get_queryset(self):
         return " "
 
-
+def login(request):
+    return render(request, 'login/login.html')
 
 @csrf_exempt
-def login(request):
+def loginpost(request):
 
     if request.method == "POST":
         data =  request.body;
@@ -49,7 +50,6 @@ def login(request):
               #return render(request, 'main/index.html', {"session":request.session})
               return redirect("/")
         else:
-             print('234433')
              return render(request, "login/login.html", {"error_msg": "用户名或密码错误"})
 
 

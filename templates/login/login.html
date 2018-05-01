@@ -17,6 +17,7 @@
 	<div class="container">
 		<h1>Welcome</h1>
 		<form class="form" action = "/login/login/" method = "post" id = "my_form" accept-charset = "utf-8">
+            {% csrf_token %}
 			<input type="text" name="username" id="username" placeholder="用户名">
 			<input type="password" name="passwd" id="passwd" placeholder="密码">
 			<button type="submit" id="login-button">登录</button>
@@ -29,23 +30,6 @@
 
 <script type="text/javascript" src="/static/js/jquery.min.js"></script>
 <script type="text/javascript">
-{#$('#login-button').click(function(event){#}
-{#    debugger;#}
-{#      $.ajax({#}
-{#            url: '/login/login/',#}
-{#            type: "POST",#}
-{#            data:{#}
-{#              passwd : $("#passwd").val(),#}
-{#              username :  $("#username").val()#}
-{#            },#}
-{#            async:false,#}
-{#            contentType: "application/json",#}
-{#            success: function (datas) {#}
-{#             debugger;#}
-{##}
-{#            }#}
-{#        });#}
-{# }); #}
 </script>
 
 </body>
