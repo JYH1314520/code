@@ -58,12 +58,6 @@ layui.config({
 		$('body').removeClass('site-mobile');
 	});
 
-	// 添加新窗口
-	$(".layui-nav .layui-nav-item a").on("click",function(){
-		addTab($(this));
-		$(this).parent("li").siblings().removeClass("layui-nav-itemed");
-	})
-
 	//公告层
 	function showNotice(){
 		layer.open({
@@ -131,6 +125,33 @@ layui.config({
 			}
 		}
 	}
+
+//系统基本参数
+	if(window.sessionStorage.getItem("systemParameter")){
+		var systemParameter = JSON.parse(window.sessionStorage.getItem("systemParameter"));
+		fillParameter(systemParameter);
+	}else{
+		$.ajax({
+			url : "/main/systemParameter/",
+			type : "get",
+			dataType : "json",
+			success : function(data){
+				fillParameter(data);
+			}
+		})
+	}
+	//判断字段数据是否存在
+	function nullData(data){
+		if(data == '' || data == undefined || data == null){
+			return "未定义";
+		}else{
+			return data;
+		}
+	}
+	//填充数据方法
+ 	function fillParameter(data){
+ 		$(".userName").text(nullData(data.author));      //用户名
+ 	}
 
 })
 
