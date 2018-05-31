@@ -75,6 +75,7 @@ layui.config({
 				btn.css('text-align', 'center');
 				btn.on("click",function(){
 					window.sessionStorage.setItem("showNotice","true");
+
 				})
 				if($(window).width() > 432){  //如果页面宽度不足以显示顶部“系统公告”按钮，则不提示
 					btn.on("click",function(){
