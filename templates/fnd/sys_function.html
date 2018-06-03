@@ -150,19 +150,20 @@
     var dataSource = Qwe.createGridDataSource({
         url:'/fnd/function_operation/',
         model: {
-            id: "functionId",
+            id: "function_id",
             fields: {
-                moduleCode: {type: "string", validation: {required: true}},
-                functionCode: {type: "string", validation: {required: true}},
-                functionName: {type: "string",validation: {required: true}},
-                functionIcon: {type: "string"},
-                functionSequence: {type: "int", defaultValue: 10},
-                functionDescription: {type: "string"},
-                parentFunctionId: {type: "int"},
-                resourceId: {type: "int"}
+                function_code: {type: "string", validation: {required: true}},
+                function_name: {type: "string", validation: {required: true}},
+                function_description: {type: "string",validation: {required: true}},
+                icon: {type: "string", defaultValue: null},
+                sequence: {type: "int", defaultValue: 10},
+                function_description: {type: "string", defaultValue: null},
+                parent_function_id: {type: "int", defaultValue: null},
+                href: {type: "string", defaultValue: null},
+                function_type: {type: 'string', defaultValue: null}
             },
             editable:function (col) {
-                if (col == 'functionCode' && this.functionId) {
+                if (col == 'function_code' && this.function_id) {
                     return false;
                 }
                 return true;
@@ -172,11 +173,7 @@
     var grid = $("#grid").kendoGrid({
         dataSource: dataSource,
         navigatable: true,
-        dataBound: function(){
-            if(parent.autoResizeIframe){
-                parent.autoResizeIframe('FUNCTION_ADD')
-            }
-        },
+
         autoResize:false,
         scrollable: true,
         selectable: 'multiple, rowbox',
@@ -189,17 +186,12 @@
         editable: true,
         columns: [
             {
-                field: "functionCode",
+                field: "function_code",
                 title: '功能代码',
                 width: 180
             },
             {
-                field: "moduleCode",
-                title: '模块代码',
-                width: 100
-            },
-            {
-                field: "functionName",
+                field: "function_name",
                 title: '功能名称',
                 width: 120,
                 sortable: false,
@@ -207,15 +199,15 @@
                     $('<input required name="' + options.field + '"/>')
                             .appendTo(container)
                             .kendoTLEdit({
-                                idField: 'functionId',
-                                field: 'functionName',
+                                idField: 'function_id',
+                                field: 'function_name',
                                 dto: "com.hand.Qwe.function.dto.Function",
                                 model: options.model
                             });
                 }
             },
             {
-                field: "functionIcon", title: '功能图标',
+                field: "icon", title: '功能图标',
                 sortable: false,
                 width: 150,
                 template: function (item) {
@@ -223,7 +215,7 @@
                 }
             },
             {
-                field: "functionSequence",
+                field: "sequence",
                 title: '功能序号',
                 width: 80,
                 format: "{0}",
@@ -233,7 +225,7 @@
 
             },
             {
-                field: "functionDescription",
+                field: "function_description",
                 title: '功能描述',
                 sortable: false,
                 width: 140,
@@ -241,45 +233,59 @@
                     $('<input name="' + options.field + '"/>')
                             .appendTo(container)
                             .kendoTLEdit({
-                                idField: 'functionId',
-                                field: 'functionDescription',
+                                idField: 'function_id',
+                                field: 'title',
                                 dto: "com.hand.Qwe.function.dto.Function",
                                 model: options.model
                             });
                 }
             },
             {
-                field: "parentFunctionId",
+                field: "parent_function_id",
                 title: '父级功能',
                 sortable: false,
                 width: 120,
                 template: function (dataItem) {
-                    return dataItem['parentFunctionName'] || ''
+                    return dataItem['parent_function_name'] || ''
                 },
                 editor: function (container, options) {
                     $('<input name="' + options.field + '"/>')
                             .appendTo(container)
-                            .kendoLov($.extend({"queryColumns":1,"height":350,"width":550,"readonly":true,"dataValueField":"functionId","dataTextField":"functionName","title":"父级功能","placeholder":"父级功能","form":"<div class='form-group' style='width:100%'><label class='col-sm-3 control-label' >功能代码</label><div class='col-sm-9 k-lov-input' ><input name='functionCode' data-bind='value:data.functionCode' style='width:100%'></div></div><div class='form-group' style='width:100%'><label class='col-sm-3 control-label' >功能名称</label><div class='col-sm-9 k-lov-input' ><input name='functionName' data-bind='value:data.functionName' style='width:100%'></div></div>","formItemMap":{"functionCode":{"type":"kendoMaskedTextBox"},"functionName":{"type":"kendoMaskedTextBox"}},"grid":{"height":350,"url":"/common/lov/LOV_PARENTFUNCTION","columns":[{"field":"functionCode","title":"功能代码","width":100,"attributes":{"style":"text-align:left"}},{"field":"functionName","title":"功能名称","width":120,"attributes":{"style":"text-align:left"}}],"pageSize":"10"},"idField":null,"parentIdField":null,"tree":false}, {
+                            .kendoLov($.extend({"queryColumns":1,
+                                                "height":350,
+                                                "width":550,
+                                                "readonly":true,
+                                                "dataValueField":"function_id",
+                                                 "dataTextField":"function_name",
+                                                  "title":"父级功能",
+                                                  "placeholder":"父级功能",
+                                                   "form":"<div class='form-group' style='width:100%'><label class='col-sm-3 control-label' >功能代码</label><div class='col-sm-9 k-lov-input' ><input name='functionCode' data-bind='value:data.functionCode' style='width:100%'></div></div><div class='form-group' style='width:100%'><label class='col-sm-3 control-label' >功能名称</label><div class='col-sm-9 k-lov-input' ><input name='functionName' data-bind='value:data.functionName' style='width:100%'></div></div>",
+                                                   "formItemMap":{"function_code":
+                                                                   {"type":"kendoMaskedTextBox"},
+                                                                   "function_name":{"type":"kendoMaskedTextBox"}},
+                                                    "grid":{"height":350,"url":"/common/lov/LOV_PARENTFUNCTION",
+                                                             "columns":[{"field":"functionCode",
+                                                                          "title":"功能代码",
+                                                                           "width":100,
+                                                                           "attributes":{"style":"text-align:left"}},
+                                                                          {"field":"function_name","title":"功能名称",
+                                                                                     "width":120,
+                                                                                     "attributes":{"style":"text-align:left"}}],
+                                                        "pageSize":"10"},"idField":null,"parentIdField":null,"tree":false}, {
                                 textField: 'parentFunctionName',
                                 model: options.model
                             }));
                 }
             },
             {
-                field: "resourceId",
-                title: '入口页面', width: 120,
-                sortable: false,
-                template: function (dataItem) {
-                    return dataItem['resourceName'] || ''
-                },
-                editor: function (container, options) {
-                    $('<input name="' + options.field + '"/>')
-                            .appendTo(container)
-                            .kendoLov($.extend({"queryColumns":1,"height":300,"width":500,"readonly":true,"dataValueField":"resourceId","dataTextField":"name","title":"选择资源","form":"<div class='form-group' style='width:100%'><label class='col-sm-3 control-label' >名称</label><div class='col-sm-9 k-lov-input' ><input name='name' data-bind='value:data.name' style='width:100%'></div></div><div class='form-group' style='width:100%'><label class='col-sm-3 control-label' >URL</label><div class='col-sm-9 k-lov-input' ><input name='url' data-bind='value:data.url' style='width:100%'></div></div>","formItemMap":{"name":{"type":"kendoMaskedTextBox"},"url":{"type":"kendoMaskedTextBox"}},"grid":{"height":300,"url":"/common/lov/LOV_RESOURCE","columns":[{"field":"name","title":"名称","width":160,"attributes":{"style":"text-align:left"}},{"field":"url","title":"URL","width":220,"attributes":{"style":"text-align:left"}}],"pageSize":"10"},"idField":null,"parentIdField":null,"tree":false}, {
-                                textField: 'resourceName',
-                                model: options.model
-                            }));
-                }
+                field: "href",
+                title: '入口页面',
+                width: 180
+            },
+            {
+                field: "function_type",
+                title: '功能类型',
+                width: 180
             },
             {
                 title: '功能资源',

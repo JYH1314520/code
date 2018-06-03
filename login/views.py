@@ -1,4 +1,4 @@
-
+from django.contrib import auth
 from django.http import HttpResponse, HttpResponseRedirect, request
 from django.shortcuts import render, redirect
 
@@ -8,7 +8,7 @@ from django.contrib.auth.hashers import make_password, check_password
 from django.views.decorators.csrf import csrf_exempt
 
 from .models import  function
-import hashlib
+import json
 from django.core.serializers import serialize
 from user.models import User
 
@@ -30,6 +30,15 @@ class LoginView(generic.ListView):
 def login(request):
     return render(request, 'login/login.html')
 
+def loginout(requset):
+    try:
+        auth.logout(request)
+    except KeyError:
+        pass
+    list = {"rows": [], "total": 1, "success": True, "message": '退出成功！'}
+    response = HttpResponse(json.dumps(list))
+    return response
+
 @csrf_exempt
 def loginpost(request):
 
@@ -38,15 +47,17 @@ def loginpost(request):
         user_name = request.POST['username']
         passwd =    request.POST['passwd']
         try:
-         loginuser =  User.objects.filter(user_name=user_name)
+         loginuser =  User.objects.filter(username=user_name)
          print(loginuser[0].password_encrypted)
         except :
             return render(request, "login/login.html", {"error_msg": "no such user"})
-
+        user= auth.authenticate(username=user_name,password=passwd)
         if check_password(passwd, loginuser[0].password_encrypted):
         # if hashlib.md5(passwd) ==  loginuser[0].password_encrypted:
               request.session['user_id'] = loginuser[0].user_id
-              request.session['username'] = loginuser[0].user_name
+              request.session['username'] = loginuser[0].username
+              if user and user.is_active:
+                 auth.login(request, user)
               #return render(request, 'main/index.html', {"session":request.session})
               return redirect("/")
         else:

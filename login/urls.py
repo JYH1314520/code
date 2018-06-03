@@ -23,6 +23,7 @@ from  .views import *
 urlpatterns = [
 
     url(r'^login/', loginpost, name="loginpost"),
+    url(r'^loginout/', loginout, name="loginout"),
     url(r'^$', login, name="login"),
 
 ]
