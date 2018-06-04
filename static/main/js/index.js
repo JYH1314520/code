@@ -60,8 +60,47 @@ layui.config({
 
 	// 添加新窗口
 	$(".layui-nav .layui-nav-item a").on("click",function(){
-		addTab($(this));
-		$(this).parent("li").siblings().removeClass("layui-nav-itemed");
+		//请求下
+		var _this_li = $(this);
+		$.ajax({
+			url : "/main/authority/",
+			type : "POST",
+			dataType : "json",
+			success : function(data){
+				   if(!data || jQuery.isEmptyObject(data)){
+				   	    addTab(_this_li);
+                       _this_li.parent("li").siblings().removeClass("layui-nav-itemed");
+				   }else {
+                       if (data.success) {
+                           addTab(_this_li);
+                           _this_li.parent("li").siblings().removeClass("layui-nav-itemed");
+                       }
+                   }
+			}
+		});
+
+	})
+	//退出登录
+	function logoutfunction(){
+
+           	$.ajax({
+			url : "/login/loginout/",
+			type : "POST",
+			dataType : "json",
+			success : function(data) {
+                if (data.success) {
+                	layer.msg("退出登录！");
+                	top.window.location.href = "/login";
+                }else {
+                	layer.msg("操作失败！");
+				}
+
+			}
+		});
+	}
+
+	$(".qwe-loginout").on("click",function(){
+		 logoutfunction();
 	})
 
 	//公告层

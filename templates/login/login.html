@@ -1,11 +1,5 @@
-<!doctype html>
-<html lang="zh">
-<head>
-<meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>登录</title>
-
+{% extends "base.html" %}
+{% block content %}
 <link rel="stylesheet" type="text/css" href="/static/css/styles.css">
 
 </head>
@@ -22,15 +16,10 @@
 			<button type="submit" id="login-button">登录</button>
 		</form>
 	</div>
-
-
-
 </div>
 
 <script type="text/javascript" src="/static/js/jquery.min.js"></script>
 <script type="text/javascript">
 	$(".wrapper").height($(window).height());
 </script>
-
-</body>
-</html>
+{% endblock %}

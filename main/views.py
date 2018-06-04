@@ -10,7 +10,6 @@ from django.views.decorators.csrf import csrf_exempt
 
 
 def main(request):
-
     return render(request, 'main/main.html')
 
 
@@ -122,6 +121,10 @@ def getfunction(request):
             "icon": "&#xe613;",
             "href": "/user/user_user_fun/",
             "spread": False},
+        {"title": "功能定义",
+         "icon": "&#xe613;",
+         "href": "/fnd/functionset/",
+         "spread": False},
 		{
 			"title" : "二级菜单2",
 			"icon" : "&#xe631;",
@@ -138,6 +141,11 @@ def getfunction(request):
 
 def csrf_failure(request, reason):
     return render(request,'403.html')
+
+
+def authority(request):
+    data = []
+    return HttpResponse(json.dumps(data))
 
 
 

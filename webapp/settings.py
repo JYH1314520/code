@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'login.apps.loginConfig',
     'main.apps.MainConfig',
     'user.apps.UserConfig',
+    'fnd.apps.FndConfig'
 
 ]
 
@@ -51,6 +52,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'middleware.checkuser.SimpleMiddleware',
 ]
 
 ROOT_URLCONF = 'webapp.urls'
@@ -78,34 +80,22 @@ WSGI_APPLICATION = 'webapp.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#     }
+# }
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql', 
-        'NAME': 'ddj',    #你的数据库名称
-        'USER': 'root',   #你的数据库用户名
-        'PASSWORD': '665549', #你的数据库密码
-        'HOST': '127.0.0.1', #你的数据库主机，留空默认为localhost
-        'PORT': '3306', #你的数据库端口
+        'ENGINE': 'django.db.backends.oracle',
+        'NAME': 'orcl', #数据库名称
+        'USER': 'python', #用户名
+        'PASSWORD': 'python', #密码
+        'HOST': '192.168.0.133', #HOST
+        'PORT': '1521', #端口
     }
 }
-
-
-# DATABASES = {
-     # 'default': {
-         # 'ENGINE': 'django.db.backends.sqlite3',
-         # 'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-     # }
-# }
-#DATABASES = {
-#    'default': {
-#        'ENGINE': 'django.db.backends.oracle',
-#        'NAME': 'orcl', #数据库名称
-#        'USER': 'python', #用户名
-#        'PASSWORD': 'python', #密码
-#        'HOST': '192.168.0.133', #HOST
-#        'PORT': '1521', #端口
-#    }
-#}
 
 # Password validation
 # https://docs.djangoproject.com/en/2.0/ref/settings/#auth-password-validators
@@ -201,20 +191,20 @@ AUTH_USER_MODEL = 'user.user'
 
 # SESSION_COOKIE_AGE=60*30 #30分钟。
 # SESSION_EXPIRE_AT_BROWSER_CLOSE = True
-SESSION_COOKIE_AGE=60*1 #1分钟。
+SESSION_COOKIE_AGE=60*30 #30分钟。
 SESSION_SAVE_EVERY_REQUEST = True
 
 
-#CACHES = {
-#    'default': {
-#        'BACKEND': 'redis_cache.cache.RedisCache',
- #       'LOCATION': '127.0.0.1:6379',
- #       "OPTIONS": {
-  #          "CLIENT_CLASS": "redis_cache.client.DefaultClient",
-  #      },
-  #  },
-#}
-#REDIS_TIMEOUT=7*24*60*60
-#CUBES_REDIS_TIMEOUT=60*60
-#NEVER_REDIS_TIMEOUT=365*24*60*60
+# CACHES = {
+#     'default': {
+#         'BACKEND': 'redis_cache.cache.RedisCache',
+#         'LOCATION': '127.0.0.1:6379',
+#         "OPTIONS": {
+#             "CLIENT_CLASS": "redis_cache.client.DefaultClient",
+#         },
+#     },
+# }
+# REDIS_TIMEOUT=7*24*60*60
+# CUBES_REDIS_TIMEOUT=60*60
+# NEVER_REDIS_TIMEOUT=365*24*60*60
 

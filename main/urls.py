@@ -29,5 +29,6 @@ urlpatterns = [
     url(r'^deletenewsList/', deletenewsList,name="deletenewsList"),
     url(r'^getpagenewslist/', getpagenewslist,name="getpagenewslist"),
     url(r'^getfunction/', getfunction,name="getfunction"),
+    url(r'^authority/', authority, name="authority"),
 
 ]
