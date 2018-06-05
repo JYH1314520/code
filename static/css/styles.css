@@ -36,6 +36,8 @@ body :-ms-input-placeholder {
   font-weight: 300;
 }
 .wrapper {
+  position: absolute;
+  top: 0;
   background: #50a3a2;
   background: -webkit-linear-gradient(top left, #50a3a2 0%, #53e3a6 100%);
   background: -o-linear-gradient(top left, #50a3a2 0%, #53e3a6 100%); /* Opera 11.1 - 12.0 */
