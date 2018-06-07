@@ -1,15 +1,15 @@
-<#include "../include/header.html">
-<body>
+{% extends "base.html" %}
+{% block content %}
 <script type="text/javascript">
-    var viewModel = Hap.createGridViewModel("#grid",{
+    var viewModel = Qwe.createGridViewModel("#grid",{
         remove: function () {
             var grid = $("#grid").data("kendoGrid");
             var checked = grid.selectedDataItems();
 
             if (grid.selectedDataItems().length) {
                 kendo.ui.showConfirmDialog({
-                    title: $l('hap.tip.info'),
-                    message: $l('hap.tip.delete_confirm')
+                    title: $l('Qwe.tip.info'),
+                    message: $l('Qwe.tip.delete_confirm')
                 }).done(function (event) {
                     if (event.button == 'OK') {
                         var destroyed = [];
@@ -47,16 +47,16 @@
             }
             exportConfig["columnsInfo"] = columns;
 
-            exportConfig["param"] = Hap.prepareQueryParameter(viewModel.model.toJSON());
+            exportConfig["param"] = Qwe.prepareQueryParameter(viewModel.model.toJSON());
             exportConfig["fileName"] = "function";
             var $inputImg = $('<input>').attr({name: "config", value: kendo.stringify(exportConfig)});
-            var $inputToken=$('<input>').attr({name:"${_csrf.parameterName}",value:"${_csrf.token}",type:"hidden"});
+            var $inputToken=$('<input>').attr({name:"_csrf",value:"a27932fd-ec15-4406-8937-3f4568a711a2",type:"hidden"});
             //   var $inputSubmitBtn=$('<input>').attr({type:"submit",value:"submit"});
             var $form = $("<form>");
             $form.attr({
                 target: '_self',
                 method: 'post',
-                action: '${base.contextPath}/sys/function/export'
+                action: '/sys/function/export'
             }).append($inputImg);
             $form.append($inputToken);
             //   $form.append($inputSubmitBtn);
@@ -74,40 +74,40 @@
     <div class="pull-left" id="toolbar-btn" style="padding-bottom:10px;">
         <span class="btn btn-primary k-grid-add" data-hotkey="hotkey_create"
               style="float:left;margin-right:5px;"
-              data-bind="click:create"><i class="fa fa-plus-square" style="margin-right:3px;"></i><@spring.message "hap.new"/></span>
+              data-bind="click:create"><i class="fa fa-plus-square" style="margin-right:3px;"></i>新建</span>
         <span class="btn btn-success k-grid-save-changes"
               data-hotkey="hotkey_save"
               style="float:left;margin-right:5px;"
-              data-bind="click:save"><i class="fa fa-save" style="margin-right:3px;"></i><@spring.message "hap.save"/></span>
+              data-bind="click:save"><i class="fa fa-save" style="margin-right:3px;"></i>保存</span>
         <span  class="btn btn-danger" data-bind="click:remove"
                data-hotkey="hotkey_delete"
-              style="float:left;margin-right:5px;"><i class="fa fa-trash-o" style="margin-right:3px;"></i><@spring.message "hap.delete"/></span>
+              style="float:left;margin-right:5px;"><i class="fa fa-trash-o" style="margin-right:3px;"></i>删除</span>
       <!--  <span class="btn btn-primary" style="float:left;margin-right:5px;"
-              data-bind="click:exportExcelFunction"><i class="fa fa-file-excel-o" style="margin-right:3px;"></i><@spring.message "hap.exportexcel"/></span>
+              data-bind="click:exportExcelFunction"><i class="fa fa-file-excel-o" style="margin-right:3px;"></i>导出</span>
    -->
-        <span class="btn btn-primary k-grid-excel" style="float:left;" data-bind="click:exportExcel"><i class="fa fa-file-excel-o" style="margin-right:3px;"></i><@spring.message "hap.exportexcel"/></span>
+        <span class="btn btn-primary k-grid-excel" style="float:left;" data-bind="click:exportExcel"><i class="fa fa-file-excel-o" style="margin-right:3px;"></i>导出</span>
 
     </div>
     <script>kendo.bind($('#toolbar-btn'), viewModel);</script>
 
     <div id="queryPanel" class="pull-right" style="margin-right:5px;padding-bottom:10px;">
         <div class="k-query-simple" id="query-form">
-            <input data-role="maskedtextbox" placeholder='<@spring.message "function.functioncode"/>' type="text" style="width:120px;margin-right:5px;" data-bind="value:model.functionCode" class="k-textbox"/>
-            <input data-role="maskedtextbox" placeholder='<@spring.message "function.functionname"/>' type="text" style="width: 120px;margin-right:5px;" data-bind="value:model.functionName" class="k-textbox">
-            <input type="text" id="parentFunctionId" placeholder='<@spring.message "function.parentfunctionid"/>' style="width:120px;" data-bind="value:model.parentFunctionId">
+            <input data-role="maskedtextbox" placeholder='功能代码' type="text" style="width:120px;margin-right:5px;" data-bind="value:model.functionCode" class="k-textbox"/>
+            <input data-role="maskedtextbox" placeholder='功能名称' type="text" style="width: 120px;margin-right:5px;" data-bind="value:model.functionName" class="k-textbox">
+            <input type="text" id="parentFunctionId" placeholder='父级功能' style="width:120px;" data-bind="value:model.parentFunctionId">
             <script>
-                $("#parentFunctionId").kendoLov(<@lov "LOV_PARENTFUNCTION"/>)
+                $("#parentFunctionId").kendoLov({"queryColumns":1,"height":350,"width":550,"readonly":true,"dataValueField":"functionId","dataTextField":"functionName","title":"父级功能","placeholder":"父级功能","form":"<div class='form-group' style='width:100%'><label class='col-sm-3 control-label' >功能代码</label><div class='col-sm-9 k-lov-input' ><input name='functionCode' data-bind='value:data.functionCode' style='width:100%'></div></div><div class='form-group' style='width:100%'><label class='col-sm-3 control-label' >功能名称</label><div class='col-sm-9 k-lov-input' ><input name='functionName' data-bind='value:data.functionName' style='width:100%'></div></div>","formItemMap":{"functionCode":{"type":"kendoMaskedTextBox"},"functionName":{"type":"kendoMaskedTextBox"}},"grid":{"height":350,"url":"/common/lov/LOV_PARENTFUNCTION","columns":[{"field":"functionCode","title":"功能代码","width":100,"attributes":{"style":"text-align:left"}},{"field":"functionName","title":"功能名称","width":120,"attributes":{"style":"text-align:left"}}],"pageSize":"10"},"idField":null,"parentIdField":null,"tree":false})
             </script>
         </div>
         <script>kendo.bind($('#query-form'), viewModel);</script>
         <div class="k-query-detail" id="query-form2">
             <div class="rows" style="margin-top:5px">
-                <input data-role="maskedtextbox" placeholder='<@spring.message "function.modulecode"/>' type="text"
+                <input data-role="maskedtextbox" placeholder='模块代码' type="text"
                        style="width: 150px;margin-right:5px;" data-bind="value:model.moduleCode" class="k-textbox">
-                <input type="text" id="resourceId" placeholder='<@spring.message "function.mainpage"/>'
+                <input type="text" id="resourceId" placeholder='入口页面'
                        style="width:150px;" data-bind="value:model.resourceId">
                 <script>
-                    $("#resourceId").kendoLov(<@lov "LOV_RESOURCE"/>)
+                    $("#resourceId").kendoLov({"queryColumns":1,"height":300,"width":500,"readonly":true,"dataValueField":"resourceId","dataTextField":"name","title":"选择资源","form":"<div class='form-group' style='width:100%'><label class='col-sm-3 control-label' >名称</label><div class='col-sm-9 k-lov-input' ><input name='name' data-bind='value:data.name' style='width:100%'></div></div><div class='form-group' style='width:100%'><label class='col-sm-3 control-label' >URL</label><div class='col-sm-9 k-lov-input' ><input name='url' data-bind='value:data.url' style='width:100%'></div></div>","formItemMap":{"name":{"type":"kendoMaskedTextBox"},"url":{"type":"kendoMaskedTextBox"}},"grid":{"height":300,"url":"/common/lov/LOV_RESOURCE","columns":[{"field":"name","title":"名称","width":160,"attributes":{"style":"text-align:left"}},{"field":"url","title":"URL","width":220,"attributes":{"style":"text-align:left"}}],"pageSize":"10"},"idField":null,"parentIdField":null,"tree":false})
                 </script>
             </div>
 
@@ -132,13 +132,13 @@
 
 
 <script type="text/javascript">
-    Hap.initEnterQuery("#query-form",viewModel.query);
+    Qwe.initEnterQuery("#query-form",viewModel.query);
     function editFunctionResources(id) {
         var dialog = $("#dialog").kendoWindow({
             actions: ["Close"],
             width: 800,
             height: 450,
-            title: '<@spring.message "function.resourceallocation"/>',
+            title: '分配资源',
             visible: false,
             iframe: true,
             modal: true,
@@ -147,22 +147,23 @@
         dialog.center().open();
     };
 
-    var dataSource = Hap.createGridDataSource({
-        url:'${base.contextPath}/sys/function/',
+    var dataSource = Qwe.createGridDataSource({
+        url:'/fnd/function_operation/',
         model: {
-            id: "functionId",
+            id: "function_id",
             fields: {
-                moduleCode: {type: "string", validation: {required: true}},
-                functionCode: {type: "string", validation: {required: true}},
-                functionName: {type: "string",validation: {required: true}},
-                functionIcon: {type: "string"},
-                functionSequence: {type: "int", defaultValue: 10},
-                functionDescription: {type: "string"},
-                parentFunctionId: {type: "int"},
-                resourceId: {type: "int"}
+                function_code: {type: "string", validation: {required: true}},
+                function_name: {type: "string", validation: {required: true}},
+                function_description: {type: "string",validation: {required: true}},
+                icon: {type: "string", defaultValue: null},
+                sequence: {type: "int", defaultValue: 10},
+                function_description: {type: "string", defaultValue: null},
+                parent_function_id: {type: "int", defaultValue: null},
+                href: {type: "string", defaultValue: null},
+                function_type: {type: 'string', defaultValue: null}
             },
             editable:function (col) {
-                if (col == 'functionCode' && this.functionId) {
+                if (col == 'function_code' && this.function_id) {
                     return false;
                 }
                 return true;
@@ -172,11 +173,7 @@
     var grid = $("#grid").kendoGrid({
         dataSource: dataSource,
         navigatable: true,
-        dataBound: function(){
-            if(parent.autoResizeIframe){
-                parent.autoResizeIframe('${RequestParameters.functionCode!}')
-            }
-        },
+
         autoResize:false,
         scrollable: true,
         selectable: 'multiple, rowbox',
@@ -189,42 +186,37 @@
         editable: true,
         columns: [
             {
-                field: "functionCode",
-                title: '<@spring.message "function.functioncode"/>',
+                field: "function_code",
+                title: '功能代码',
                 width: 180
             },
             {
-                field: "moduleCode",
-                title: '<@spring.message "function.modulecode"/>',
-                width: 100
-            },
-            {
-                field: "functionName",
-                title: '<@spring.message "function.functionname"/>',
+                field: "function_name",
+                title: '功能名称',
                 width: 120,
                 sortable: false,
                 editor: function (container, options) {
                     $('<input required name="' + options.field + '"/>')
                             .appendTo(container)
                             .kendoTLEdit({
-                                idField: 'functionId',
-                                field: 'functionName',
-                                dto: "com.hand.hap.function.dto.Function",
+                                idField: 'function_id',
+                                field: 'function_name',
+                                dto: "com.hand.Qwe.function.dto.Function",
                                 model: options.model
                             });
                 }
             },
             {
-                field: "functionIcon", title: '<@spring.message "function.functionicon"/>',
+                field: "icon", title: '功能图标',
                 sortable: false,
                 width: 150,
                 template: function (item) {
-                    return Hap.escapeHtml((item.functionIcon || '')) + "<i class='" + item.functionIcon + "' style='width:16px;float:right'></i>"
+                    return Qwe.escapeHtml((item.functionIcon || '')) + "<i class='" + item.functionIcon + "' style='width:16px;float:right'></i>"
                 }
             },
             {
-                field: "functionSequence",
-                title: '<@spring.message "function.functionsequence"/>',
+                field: "sequence",
+                title: '功能序号',
                 width: 80,
                 format: "{0}",
                 attributes: {
@@ -233,56 +225,70 @@
 
             },
             {
-                field: "functionDescription",
-                title: '<@spring.message "function.functiondescription"/>',
+                field: "function_description",
+                title: '功能描述',
                 sortable: false,
                 width: 140,
                 editor: function (container, options) {
                     $('<input name="' + options.field + '"/>')
                             .appendTo(container)
                             .kendoTLEdit({
-                                idField: 'functionId',
-                                field: 'functionDescription',
-                                dto: "com.hand.hap.function.dto.Function",
+                                idField: 'function_id',
+                                field: 'title',
+                                dto: "com.hand.Qwe.function.dto.Function",
                                 model: options.model
                             });
                 }
             },
             {
-                field: "parentFunctionId",
-                title: '<@spring.message "function.parentfunctionid"/>',
+                field: "parent_function_id",
+                title: '父级功能',
                 sortable: false,
                 width: 120,
                 template: function (dataItem) {
-                    return dataItem['parentFunctionName'] || ''
+                    return dataItem['parent_function_name'] || ''
                 },
                 editor: function (container, options) {
                     $('<input name="' + options.field + '"/>')
                             .appendTo(container)
-                            .kendoLov($.extend(<@lov "LOV_PARENTFUNCTION"/>, {
+                            .kendoLov($.extend({"queryColumns":1,
+                                                "height":350,
+                                                "width":550,
+                                                "readonly":true,
+                                                "dataValueField":"function_id",
+                                                 "dataTextField":"function_name",
+                                                  "title":"父级功能",
+                                                  "placeholder":"父级功能",
+                                                   "form":"<div class='form-group' style='width:100%'><label class='col-sm-3 control-label' >功能代码</label><div class='col-sm-9 k-lov-input' ><input name='functionCode' data-bind='value:data.functionCode' style='width:100%'></div></div><div class='form-group' style='width:100%'><label class='col-sm-3 control-label' >功能名称</label><div class='col-sm-9 k-lov-input' ><input name='functionName' data-bind='value:data.functionName' style='width:100%'></div></div>",
+                                                   "formItemMap":{"function_code":
+                                                                   {"type":"kendoMaskedTextBox"},
+                                                                   "function_name":{"type":"kendoMaskedTextBox"}},
+                                                    "grid":{"height":350,"url":"/common/lov/LOV_PARENTFUNCTION",
+                                                             "columns":[{"field":"functionCode",
+                                                                          "title":"功能代码",
+                                                                           "width":100,
+                                                                           "attributes":{"style":"text-align:left"}},
+                                                                          {"field":"function_name","title":"功能名称",
+                                                                                     "width":120,
+                                                                                     "attributes":{"style":"text-align:left"}}],
+                                                        "pageSize":"10"},"idField":null,"parentIdField":null,"tree":false}, {
                                 textField: 'parentFunctionName',
                                 model: options.model
                             }));
                 }
             },
             {
-                field: "resourceId",
-                title: '<@spring.message "function.mainpage"/>', width: 120,
-                sortable: false,
-                template: function (dataItem) {
-                    return dataItem['resourceName'] || ''
-                },
-                editor: function (container, options) {
-                    $('<input name="' + options.field + '"/>')
-                            .appendTo(container)
-                            .kendoLov($.extend(<@lov "LOV_RESOURCE"/>, {
-                                textField: 'resourceName',
-                                model: options.model
-                            }));
-                }
+                field: "href",
+                title: '入口页面',
+                width: 180
             },
             {
-                title: '<@spring.message "function.functionresource"/>',
+                field: "function_type",
+                title: '功能类型',
+                width: 180
+            },
+            {
+                title: '功能资源',
                 width: 80,
                 headerAttributes: {
                     style  : "text-align: center"
@@ -290,7 +296,7 @@
                 attributes: {style: "text-align:center"},
                 template: function (rowdata) {
                     if (!!rowdata.functionId) {
-                        return Hap.createAnchor('<@spring.message "hap.edit"/>',editFunctionResources,rowdata.functionId);
+                        return Qwe.createAnchor('编辑',editFunctionResources,rowdata.functionId);
                     }
                     return '';
                 }
@@ -299,6 +305,4 @@
     }).data("kendoGrid");
 
 </script>
-
-</body>
-</html>
+{% endblock %}

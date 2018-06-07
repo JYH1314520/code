@@ -2,6 +2,7 @@ from django.http import HttpResponse
 from django.shortcuts import  redirect
 import json
 from django.utils.deprecation import MiddlewareMixin
+from django.shortcuts import render
 
 
 class SimpleMiddleware(MiddlewareMixin):
@@ -16,16 +17,20 @@ class SimpleMiddleware(MiddlewareMixin):
         if not response:
             response = self.get_response(request)
         if hasattr(self, 'process_response'):
-            response = self.process_response(request, response)
+            response = self.process_response(request,response)
         return response
     def process_request(self,request,*args,**kwargs):
-
-        if request.path_info == '/login/':
-            return None
-        if request.path_info == '/login/login/':
-            return None
         userinfo = request.session.get('username', default=None)
         if not userinfo:
-             return redirect('/login/')
+            if request.path_info == '/login/':
+                return None;
+            if request.path_info == '/login/login/':
+                return None
+            if request.path_info == '/':
+                return None
+            list = {"rows": [], "total": 1, "success": False, "message": 'cheng', "code": "sys_session_timeout"}
+            response = HttpResponse(json.dumps(list))
+            return response
+
     def process_response(self,request,response):
         return response

@@ -10,7 +10,7 @@ class UserManager(BaseUserManager):
         if not email:
             raise ValueError('Users must have an email address')
 
-        user = self.model(user_name=name,
+        user = self.model(username=name,
             email=UserManager.normalize_email(email),
         )
 
@@ -28,7 +28,7 @@ class UserManager(BaseUserManager):
 
 class User(AbstractBaseUser):
     user_id  =  models.AutoField(primary_key=True)
-    user_name = models.CharField('用户',max_length=200, unique=True,db_index=True)
+    username = models.CharField('用户',max_length=200, unique=True,db_index=True)
     user_type = models.CharField('用户类型',max_length=200,null=True, db_index=True)
     password_encrypted =  models.CharField(max_length=200)
     email = models.EmailField('邮箱',max_length=255,null=True, unique=True, db_index=True)
@@ -77,17 +77,19 @@ class User(AbstractBaseUser):
     vendor_id =  models.IntegerField(null=True,blank=True)
     request_id = models.IntegerField(null=True,blank=True)
     program_id = models.IntegerField(null=True,blank=True)
-
+    is_superuser = models.BooleanField(default=True)
+    last_login   = models.DateTimeField(null=True,blank=True)
+    date_joined  =models.DateTimeField(null=True,blank=True)
     objects = UserManager()
 
-    USERNAME_FIELD = 'user_name'
+    USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = ('email',)
 
     class Meta:
         ordering = ('-creation_date',)
 
     def __unicode__(self):
-        return self.user_name
+        return self.username
 
     def get_full_name(self):
         return self.description
@@ -105,6 +107,7 @@ class User(AbstractBaseUser):
     @property
     def is_staff(self):
         return self.is_admin
+
 
 
     def toJSON(self):

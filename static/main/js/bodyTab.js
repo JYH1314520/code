@@ -99,6 +99,8 @@ layui.define(["element","jquery"],function(exports){
 				        id : new Date().getTime()
 				    })
 
+
+
 					//当前窗口内容
 					var curmenu = {
 						"icon" : _this.find("i.iconfont").attr("data-icon")!=undefined ? _this.find("i.iconfont").attr("data-icon") : _this.find("i.layui-icon").attr("data-icon"),

@@ -58,6 +58,34 @@ layui.config({
 		$('body').removeClass('site-mobile');
 	});
 
+	// 添加新窗口
+	$(".layui-nav .layui-nav-item a").on("click",function(){
+		addTab($(this));
+		$(this).parent("li").siblings().removeClass("layui-nav-itemed");
+	})
+
+    //退出登录
+	function logoutfunction(){
+
+           	$.ajax({
+			url : "/login/loginout/",
+			type : "POST",
+			dataType : "json",
+			success : function(data) {
+                if (data.success) {
+                	layer.msg("退出登录！");
+                	top.window.location.href = "/login";
+                }else {
+                	layer.msg("操作失败！");
+				}
+
+			}
+		});
+	}
+
+	$(".qwe-loginout").on("click",function(){
+		 logoutfunction();
+	})
 	//公告层
 	function showNotice(){
 		layer.open({
@@ -75,7 +103,6 @@ layui.config({
 				btn.css('text-align', 'center');
 				btn.on("click",function(){
 					window.sessionStorage.setItem("showNotice","true");
-
 				})
 				if($(window).width() > 432){  //如果页面宽度不足以显示顶部“系统公告”按钮，则不提示
 					btn.on("click",function(){
@@ -126,33 +153,6 @@ layui.config({
 			}
 		}
 	}
-
-//系统基本参数
-	if(window.sessionStorage.getItem("systemParameter")){
-		var systemParameter = JSON.parse(window.sessionStorage.getItem("systemParameter"));
-		fillParameter(systemParameter);
-	}else{
-		$.ajax({
-			url : "/main/systemParameter/",
-			type : "get",
-			dataType : "json",
-			success : function(data){
-				fillParameter(data);
-			}
-		})
-	}
-	//判断字段数据是否存在
-	function nullData(data){
-		if(data == '' || data == undefined || data == null){
-			return "未定义";
-		}else{
-			return data;
-		}
-	}
-	//填充数据方法
- 	function fillParameter(data){
- 		$(".userName").text(nullData(data.author));      //用户名
- 	}
 
 })
 

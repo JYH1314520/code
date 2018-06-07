@@ -2,9 +2,6 @@
  * @summary Qwe
  * @description 抽象通用函数
  * @version 3.0
- * @author njq.niu@hand-china.com
- * @author shengyang.zhou@hand-china.com
- * @copyright Copyright Hand China Co.,Ltd.
  *
  */
 !(function ($) {
@@ -112,8 +109,8 @@
             var checked = grid.selectedDataItems();
             if (grid.selectedDataItems().length) {
                 kendo.ui.showConfirmDialog({
-                    title: $l('Qwe.tip.info'),
-                    message: $l('Qwe.tip.delete_confirm')
+                    title: "提示",
+                    message: "确定删除？"
                 }).done(function (event) {
                     if (event.button == 'OK') {
                         var destroyed = [];
@@ -586,13 +583,14 @@
         });
 
 
+
         Qwe.resolveError = function (json, callback) {
             switch (json.code) {
                 case 'sys_session_timeout':
-                    if (top.sessionExpiredLogin) {
-                        top.sessionExpiredLogin();
+                    if (sessionExpiredLogin) {
+                        sessionExpiredLogin();
                     } else {
-                        top.location.href = _basePath + '/login';
+                        top.location.href = _basePath + '/login/';
                     }
                     break;
                 case 'sys_access_denied':

@@ -168,7 +168,7 @@ def user_user_operation(request,operation):
                             status = request.GET.get('status')
                             kwargs = {}
                             if user_name is not None:
-                                kwargs['user_name'] = user_name
+                                kwargs['username'] = user_name
                             if employee_code is not None:
                                 kwargs['employee_code'] = employee_code
                             if employee_name is not None:
@@ -199,7 +199,7 @@ def user_user_operation(request,operation):
                                     end_date = ' '
                                 try:
                                     rows.append({'user_id': rec.user_id,
-                                                 'user_name': rec.user_name,
+                                                 'username': rec.user_name,
                                                  'description': rec.description,
                                                  'start_date': start_date,
                                                  'end_date': end_date,
@@ -222,7 +222,7 @@ def user_user_operation(request,operation):
              querysetlist = []
              for item in datajson:
                  heigh = heigh + 1
-                 b = User(user_name=item['user_name'],
+                 b = User(username=item['user_name'],
                           email=item['email'],
                           phone=item['phone'],
                           start_date=item['start_date'],
@@ -251,19 +251,21 @@ def user_user_operation(request,operation):
           heigh = 0
           rows = []
           for item in datajson:
-            role_id = role_id = item['role_id']
-            role_name = item['role_name']
+            user_id = role_id = item['user_id']
+            username = item['username']
+            description = item['description']
             start_date = item['start_date']
             end_date = item['end_date']
+            phone = item['phone']
+            status = item['status']
             enable_flag = item['enable_flag']
-            roledescription = item['roledescription']
-            print(start_date)
-            p = role.objects.get(role_id=role_id)
-            p.role_name = role_name
+            p = User.objects.get(user_id=user_id)
             p.start_date = start_date
-            p.roledescription = roledescription
+            p.description = description
             p.enable_flag = enable_flag
             p.end_date = end_date
+            p.phone = phone
+            p.status = status
             p.save()  # 保存
 
         return HttpResponse(data)

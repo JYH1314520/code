@@ -30,6 +30,7 @@ urlpatterns = [
     url('^login/', include('login.urls')),
     url('^main/', include('main.urls')),
     url('^user/', include('user.urls')),
+    url('^fnd/', include('fnd.urls')),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 
 ]
