@@ -1,0 +1,173 @@
+
+{% extends "base.html" %}
+{% block content %}
+<script type="text/javascript">
+    var userId = "{{user_id}}";
+    var userName = "{{user_name}}";
+    var viewModel = kendo.observable({
+        model: {
+            userId: userId
+        },
+        cancelFunction: function (e) {
+            $('#panel_button').data('kendoGrid').cancelChanges();
+        }
+    });
+</script>
+<div id="page-content">
+    <div class="pull-left" id="toolbar-btn" style="padding-bottom:10px;">
+        <span id="add" class="btn btn-primary k-grid-add" style="float:left;margin-right:5px;">新增</span>
+        <span onclick="deleteData()" class="btn btn-danger" style="float:left;margin-right:5px;"><i class="fa fa-trash-o" style="margin-right:3px;"></i>删除</span>
+        <span class="btn btn-primary k-grid-excel" style="float:left;" data-bind="click:exportExcel"><i class="fa fa-file-excel-o" style="margin-right:3px;"></i>导出</span>
+    </div>
+
+
+    <script>kendo.bind($('#toolbar-btn'), viewModel);</script>
+    <div style="clear:both">
+        <div id="panel_button"></div>
+    </div>
+</div>
+<script type="text/javascript">
+
+    function deleteData() {
+        var checked = grid.selectedDataItems();
+        if (grid.selectedDataItems().length) {
+            kendo.ui.showConfirmDialog({
+                title: $l('Qwe.tip.info'),
+                message: $l('Qwe.tip.delete_confirm')
+            }).done(function (event) {
+                if (event.button == 'OK') {
+                    $.each(checked, function (i, v) {
+                        grid.dataSource.remove(v)
+                    })
+                    grid.dataSource.sync();
+                }
+            })
+        }
+    }
+
+    $(document).ready(function () {
+        var crudServiceBaseUrl = "${base.contextPath}/sys/userrole";
+        window.dataSource = new kendo.data.DataSource({
+            transport: {
+                read: {
+                    url: "/user/sys_user_role/query?{{user_id}}",
+                    type: "POST",
+                    dataType: "json"
+                },
+                create: {
+                    url: crudServiceBaseUrl + "/submit",
+                    contentType: "application/json",
+                    type: "POST"
+                },
+                update: {
+                    url: crudServiceBaseUrl + "/submit",
+                    contentType: "application/json",
+                    type: "POST"
+                },
+                destroy: {
+                    url: crudServiceBaseUrl + "/submit",
+                    contentType: "application/json",
+                    type: "POST"
+                },
+                parameterMap: function (options, type) {
+                    if (type !== "read" && options.models) {
+                        var datas = Qwe.prepareSubmitParameter(options, type);
+                        datas.forEach(function(data) {
+                            data["userName"] = userName;
+                        });
+                        return kendo.stringify(datas);
+                    } else if (type === "read") {
+                        return Qwe.prepareQueryParameter(viewModel.model.toJSON(), options);
+                    }
+                }
+            },
+            batch: true,
+            serverPaging: true,
+            pageSize: 10,
+            schema: {
+                data: 'rows',
+                total: 'total',
+                model: {
+                    id: 'surId',
+                    fields: {
+                        loginRequire: {defaultValue: 'Y'},
+                        accessCheck: {defaultValue: 'Y'},
+                        type: {defaultValue: 'HTML'},
+                        url: {validation: {required: true}}
+                    }
+                }
+            }
+        });
+
+        window.grid = $("#panel_button").kendoGrid({
+            dataSource: dataSource,
+            navigatable: false,
+            height:'100%',
+            selectable: 'multiple, rowbox',
+            sortable: true,
+            columns: [
+                {
+                    field: "roleCode",
+                    title: '角色代码',
+                    width: 120,
+                },
+                {
+                    field: "roleName",
+                    title: '角色名称',
+                    width: 180,
+                },
+                {
+                    field: "roleDescription",
+                    title: '角色描述',
+                    width: 200,
+                },
+                {
+                    field: "active",
+                    template: function (e) {
+                        return e.active ? '否' : '是'
+                    },
+                    title: '<@spring.message "role.isexpired"/>',
+                    width: 120,
+                    headerAttributes: {
+                        style: "text-align: center"
+                    },
+                    attributes: {style: "text-align:center"}
+                },
+                {
+                    field: "enableFlag",
+                    title: '启用',
+                    width: 120,
+                    template: function (e) {
+                        return (e.enableFlag == 'Y') ? '<@spring.message "Qwe.yes"/>' : '<@spring.message "Qwe.no"/>'
+                    },
+                    headerAttributes: {
+                        style: "text-align: center"
+                    },
+                    attributes: {style: "text-align:center"}
+                }
+
+            ],
+            editable: "popup"
+        }).data("kendoGrid");
+
+
+        $("#add").click(function () {
+          var win =  window.parent.$("#dialog").kendoWindow({
+                width: 600,
+                height: 400,
+                modal: true,
+                iframe:true,
+                visible: false,
+                content:'sys_user_addrole.html?userId=${RequestParameters.userId!0}',
+                close:function(e){
+                     window.parent.$("#roleWin").data("kendoWindow").open();
+                }
+            }).data("kendoWindow");
+            win.center().open();
+        });
+        Qwe.autoResizeGrid("#panel_button");
+
+    });
+
+</script>
+{% endblock %}

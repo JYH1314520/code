@@ -32,7 +32,7 @@ urlpatterns = [
     url('^user/', include('user.urls')),
     url('^fnd/', include('fnd.urls')),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-
+    url(r'^([^/]+)/([^/]+).html/$', html_get, name="html_get"),
 ]
 
 handler403 = permission_denied

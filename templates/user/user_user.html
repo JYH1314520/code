@@ -114,9 +114,9 @@
 
 
 
-      function choiceRole(userId, userName) {
+      function choiceRole(user_id, user_name) {
           var roleWin = $("#roleWin").data("kendoWindow");
-          roleWin.refresh('sys_user_role.html?user_id=' + user_id + '&user_name=' + user_name);
+          roleWin.refresh('/user/sys_user_role.html?user_id=' + user_id + '&user_name=' + user_name);
           if(parent.autoResizeIframe){
               parent.autoResizeIframe('ACCOUNT_USER', 700, function(){
                   roleWin.center().open();

@@ -19,9 +19,9 @@ from django.contrib.auth.hashers import make_password
 def runquery(sql):
     cursor = connection.cursor()
     cursor.execute(sql,None)
-    col_names = [desc[0] for desc in cursor.description]
+   # col_names = [desc[0] for desc in cursor.description]
     row=cursor.fetchone()
-    row = dict(zip(col_names, row))
+   # row = dict(zip(col_names, row))
     return row
 
 # Create your views here.
@@ -175,7 +175,7 @@ def user_user_operation(request,operation):
                                 kwargs['employee_name'] = employee_name
                             if status is not None:
                                 kwargs['status'] = status
-                            userLists = User.objects.filter(**kwargs ).order_by('user_name')
+                            userLists = User.objects.filter(**kwargs ).order_by('username')
                             paginator = Paginator(userLists, request.GET.get('pagesize'))  # Show 25 contacts per page
                             page = request.GET.get('page')
                             try:
@@ -199,7 +199,7 @@ def user_user_operation(request,operation):
                                     end_date = ' '
                                 try:
                                     rows.append({'user_id': rec.user_id,
-                                                 'username': rec.user_name,
+                                                 'user_name': rec.username,
                                                  'description': rec.description,
                                                  'start_date': start_date,
                                                  'end_date': end_date,
@@ -278,10 +278,17 @@ def user_password_reset(request):
          md5password =  make_password(password, None, 'pbkdf2_sha256') #hashlib.md5(password.encode("utf-8"))
          p = User.objects.get(user_id=user_id)
          p.password_encrypted = md5password
+         p.password = md5password
          p.save()
          list = {"rows": {}, "total": 1, "success": True}
      return HttpResponse(json.dumps(list))
 
+
+def sys_user_role_query(request):
+    sql = "SELECT u.username,r.role_name,r.roledescription FROM Sys_User u,Sys_User_Role ur,Sys_Role r  WHERE u.user_id  =  ur.user_id AND r.role_id =  ur.role_id"
+    row =  runquery(sql)
+    list = {"rows": row, "total": 1, "success": True}
+    return HttpResponse(json.dumps(list))
 
 
 
