@@ -18,6 +18,11 @@ from django.urls import path
 from django.conf.urls import url,include
 from .views import *
 from user.models import *
+from django.core.cache import cache
+from user.models import User
+from webapp.basefun import *
+
+
 
 
 
@@ -38,5 +43,24 @@ urlpatterns = [
 handler403 = permission_denied
 handler404 = page_not_found
 handler500 = page_error
+
+
+
+
+
+
+
+def  cache_user():
+         a_list = User.objects.all()
+         print('初始化将查询到的数据加载到缓存中')
+         row =  convert_to_dicts(a_list)
+         cache.set('user_list', row)
+         list = cache.get('user_list')
+         for a in list :
+             name = a.get("username")
+             print(name)
+
+
+cache_user()
 
 
