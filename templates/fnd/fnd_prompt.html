@@ -9,17 +9,17 @@
 
     <div id="page-content">
         <div class="pull-left" id="toolbar-btn" style="padding-bottom:10px;">
-            <span class="btn btn-primary k-grid-add" data-hotkey="hotkey_create" style="float:left;margin-right:5px;" data-bind="click:create"><i class="fa fa-plus-square" style="margin-right:3px;"></i>新建</span>
-            <span class="btn btn-success k-grid-save-changes" data-hotkey="hotkey_save" data-bind="click:save" style="float:left;margin-right:5px;"><i class="fa fa-save" style="margin-right:3px;"></i>保存</span>
-            <span class="btn btn-danger" data-hotkey="hotkey_delete" data-bind="click:remove" style="float:left;margin-right:5px;"><i class="fa fa-trash-o" style="margin-right:3px;"></i>删除</span>
-            <span class="btn btn-primary k-grid-excel" style="float:left;" data-bind="click:exportExcel"><i class="fa fa-file-excel-o" style="margin-right:3px;"></i>导出</span>
+            <span class="btn btn-primary k-grid-add" data-hotkey="hotkey_create" style="float:left;margin-right:5px;" data-bind="click:create"><i class="fa fa-plus-square" style="margin-right:3px;"></i>{% getprompt   "qwe.new" %}</span>
+            <span class="btn btn-success k-grid-save-changes" data-hotkey="hotkey_save" data-bind="click:save" style="float:left;margin-right:5px;"><i class="fa fa-save" style="margin-right:3px;"></i>{% getprompt   "qwe.save" %}</span>
+            <span class="btn btn-danger" data-hotkey="hotkey_delete" data-bind="click:remove" style="float:left;margin-right:5px;"><i class="fa fa-trash-o" style="margin-right:3px;"></i>{% getprompt   "qwe.delete" %}</span>
+            <span class="btn btn-primary k-grid-excel" style="float:left;" data-bind="click:exportExcel"><i class="fa fa-file-excel-o" style="margin-right:3px;"></i>{% getprompt   "qwe.excel" %}</span>
         </div>
         <script>kendo.bind($('#toolbar-btn'), viewModel);</script>
         <div id="queryPanel" class="pull-right" style="margin-right:5px;padding-bottom:10px;">
             <div class="k-query-simple" id="query-form">
-                <input type="text" style="width:150px;margin-right:5px" placeholder="{% getprompt   "sys_code" %}" data-bind="value:model.prompt_code" class="k-textbox">
-                <input type="text" style="width:150px;margin-right:5px" placeholder='描述说明' data-bind="value:model.description" class="k-textbox">
-                <select data-role="combobox" data-value-primitive="true" placeholder='语言' style="width:150px;" data-text-field="description" data-value-field="langCode" data-bind="source: resourceTypeData,value:model.lang"></select>
+                <input type="text" style="width:150px;margin-right:5px" placeholder="{% getprompt   "fnd.fnd_prompts.prompt_code" %}" data-bind="value:model.prompt_code" class="k-textbox">
+                <input type="text" style="width:150px;margin-right:5px" placeholder='{% getprompt   "fnd.fnd_prompts.description" %}' data-bind="value:model.description" class="k-textbox">
+                <select data-role="combobox" data-value-primitive="true" placeholder='{% getprompt   "fnd.fnd_prompts.lang" %}' style="width:150px;" data-text-field="description" data-value-field="langCode" data-bind="source: resourceTypeData,value:model.lang"></select>
             </div>
             <script>kendo.bind($('#query-form'), viewModel);</script>
         </div>
@@ -75,7 +75,7 @@
                 columns: [
                     {
                         field: "prompt_code",
-                        title: '描述编码',
+                        title: '{% getprompt   "fnd.fnd_prompts.prompt_code" %}',
                         width: 150,
                         editor: function (container, options) {
                             $('<input id="userCode" required name="' + options.field + '"/>')
@@ -87,7 +87,7 @@
                     },
                     {
                         field: "lang",
-                        title: '语言',
+                        title: '{% getprompt   "fnd.fnd_prompts.lang" %}',
                         width: 70,
                         template: function (dataItem) {
                             var v = dataItem.lang;
@@ -110,7 +110,7 @@
                     },
                     {
                         field: "description",
-                        title: '描述说明',
+                        title: '{% getprompt   "fnd.fnd_prompts.description" %}',
                         width: 250,
                         sortable: false
                     }]

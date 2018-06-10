@@ -50,17 +50,12 @@ handler500 = page_error
 
 
 
-def     cache_user():
-         a_list = fnd_prompts.objects.filter(lang="zh-cn")
+def     cache_prompts():
+         a_lists = fnd_prompts.objects.filter(lang="zh-cn")
          print('初始化将查询到的数据加载到缓存中')
-         row =  convert_to_dicts(a_list)
-         cache.set('fnd_prompts', row)
-         list = cache.get('fnd_prompts')
-         for a in list :
-             name = a.get("prompt_code")
-             print(name)
-
-
-cache_user()
+         #row =  convert_to_dicts(a_list)
+         for list in a_lists:
+             cache.set('fnd_prompts'+list.prompt_code, list.description)
+cache_prompts()
 
 
