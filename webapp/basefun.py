@@ -1,3 +1,4 @@
+from django.core.cache import cache
 def class_to_dict(obj):
     '''把对象(支持单个对象、list、set)转换成字典'''
     is_list = obj.__class__ == [].__class__
@@ -29,3 +30,12 @@ def convert_to_dicts(objs):
         dict.update(o.__dict__)
         obj_arr.append(dict)
     return obj_arr
+
+def get_prompt_cache(code):
+    promptslist = cache.get('fnd_prompts')
+    for _prompt in promptslist:
+       if code == _prompt.get("prompt_code"):
+               return  _prompt.get("description")
+       else:
+               return "not_find_prompt"
+    return "not_find_prompt"

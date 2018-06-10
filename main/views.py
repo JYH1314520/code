@@ -124,7 +124,7 @@ def getfunction(request):
         {"title": "功能定义",
          "icon": "&#xe613;",
          "href": "/fnd/functionset/",
-         "spread": False},
+         "spread": False}, {"title": "系统描述", "icon": "&#xe613;", "href": "/fnd/fnd_prompt.html", "spread": False},
 		{
 			"title" : "二级菜单2",
 			"icon" : "&#xe631;",

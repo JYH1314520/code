@@ -23,5 +23,6 @@ urlpatterns = [
     url(r'^create_function/', create_function),
     url(r'^function_operation/([^/]+)/', function_operation),
     url(r'^functionset/', functionset),
+    url(r'^prompt_operation/([^/]+)/', fnd_prompt_operation),
 
 ]

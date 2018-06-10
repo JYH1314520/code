@@ -287,6 +287,7 @@ def user_password_reset(request):
 def sys_user_role_query(request):
     sql = "SELECT u.username,r.role_name,r.roledescription FROM Sys_User u,Sys_User_Role ur,Sys_Role r  WHERE u.user_id  =  ur.user_id AND r.role_id =  ur.role_id"
     row =  runquery(sql)
+    print(row)
     list = {"rows": row, "total": 1, "success": True}
     return HttpResponse(json.dumps(list))
 
