@@ -28,4 +28,5 @@ urlpatterns = [
     url(r'^user_user_fun/', user_user_fun,name="user_user_fun"),
     url(r'^user_user_operation/([^/]+)/',  user_user_operation,name="user_user_operation"),
     url(r'^user_password_reset/',  user_password_reset,name="user_password_reset"),
+    url(r'^sys_user_role/query',  sys_user_role_query,name="sys_user_role_query"),
 ]

@@ -18,6 +18,11 @@ from django.urls import path
 from django.conf.urls import url,include
 from .views import *
 from user.models import *
+from django.core.cache import cache
+from fnd.models import fnd_prompts
+from webapp.basefun import *
+
+
 
 
 
@@ -32,11 +37,25 @@ urlpatterns = [
     url('^user/', include('user.urls')),
     url('^fnd/', include('fnd.urls')),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-
+    url(r'^([^/]+)/([^/]+).html/$', html_get, name="html_get"),
 ]
 
 handler403 = permission_denied
 handler404 = page_not_found
 handler500 = page_error
+
+
+
+
+
+
+
+def     cache_prompts():
+         a_lists = fnd_prompts.objects.filter(lang="zh-cn")
+         print('初始化将查询到的数据加载到缓存中')
+         #row =  convert_to_dicts(a_list)
+         for list in a_lists:
+             cache.set('fnd_prompts'+list.prompt_code, list.description)
+cache_prompts()
 
 

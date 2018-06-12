@@ -1,3 +1,4 @@
+from django.contrib import auth
 from django.http import HttpResponse
 from django.shortcuts import  redirect
 import json
@@ -20,10 +21,13 @@ class SimpleMiddleware(MiddlewareMixin):
             response = self.process_response(request,response)
         return response
     def process_request(self,request,*args,**kwargs):
-        userinfo = request.session.get('username', default=None)
-        if not userinfo:
+        if request.user.is_authenticated != True:
+            if request.path_info == '/admin/':
+                return None
+            if request.path_info == '/admin/login/':
+                return None
             if request.path_info == '/login/':
-                return None;
+                return None
             if request.path_info == '/login/login/':
                 return None
             if request.path_info == '/':

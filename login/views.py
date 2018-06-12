@@ -32,7 +32,7 @@ def login(request):
 
 def loginout(requset):
     try:
-        auth.logout(request)
+        auth.logout(requset)
     except KeyError:
         pass
     list = {"rows": [], "total": 1, "success": True, "message": '退出成功！'}
@@ -52,12 +52,13 @@ def loginpost(request):
         except :
             return render(request, "login/login.html", {"error_msg": "no such user"})
         user= auth.authenticate(username=user_name,password=passwd)
-        if check_password(passwd, loginuser[0].password_encrypted):
-        # if hashlib.md5(passwd) ==  loginuser[0].password_encrypted:
+        if check_password(passwd, loginuser[0].password):
               request.session['user_id'] = loginuser[0].user_id
               request.session['username'] = loginuser[0].username
               if user and user.is_active:
                  auth.login(request, user)
+              else:
+                  return render(request, "login/login.html", {"error_msg": "用户名或密码错误"})
               #return render(request, 'main/index.html', {"session":request.session})
               return redirect("/")
         else:
