@@ -647,7 +647,7 @@
             // Return on right click.
             if (e.button == 2) { return; }
 
-            // If a drag event was happening during the mouseup, don't hide
+            // If a drag event was Qwepening during the mouseup, don't hide
             // on click.
             if (isDragging) { return; }
 
@@ -798,7 +798,7 @@
                 displayColor = realColor.toString(format);
             }
 
-            // Update the text entry input as it changes happen
+            // Update the text entry input as it changes Qwepen
             if (opts.showInput) {
                 textInput.val(displayColor);
             }
@@ -1060,7 +1060,7 @@
 
         function move(e) {
             if (dragging) {
-                // Mouseup happened outside of window
+                // Mouseup Qwepened outside of window
                 if (IE && doc.documentMode < 9 && !e.button) {
                     return stop();
                 }

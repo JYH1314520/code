@@ -13,3 +13,9 @@ def getprompt(prompt_code):
     if not promptslist:
         return prompt_code
     return promptslist
+
+
+@register.simple_tag()
+def getpromptall():
+    promptslist = cache.get('fnd_prompts')
+    return promptslist

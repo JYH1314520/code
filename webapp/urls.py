@@ -16,6 +16,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.conf.urls import url,include
+
+from webapp.settings import NEVER_REDIS_TIMEOUT
 from .views import *
 from user.models import *
 from django.core.cache import cache
@@ -45,17 +47,28 @@ handler404 = page_not_found
 handler500 = page_error
 
 
-
-
-
+def cache_prompts_all():
+    a_lists = fnd_prompts.objects.filter(lang="zh-cn")
+    print('初始化将查询到的数据加载到缓存中')
+    rows =  []
+    for list in a_lists:
+        row = {"code":list.prompt_code,"value":list.description}
+        rows.append(row)
+    cache.set("fnd_prompts_all",rows)
 
 
 def     cache_prompts():
          a_lists = fnd_prompts.objects.filter(lang="zh-cn")
          print('初始化将查询到的数据加载到缓存中')
+         rows = []
          #row =  convert_to_dicts(a_list)
          for list in a_lists:
-             cache.set('fnd_prompts'+list.prompt_code, list.description)
+             cache.set('fnd_prompts'+list.prompt_code, list.description,NEVER_REDIS_TIMEOUT)
+             row = {"code": list.prompt_code, "value": list.description}
+             rows.append(row)
+         cache.set("fnd_prompts_all", rows,NEVER_REDIS_TIMEOUT)
 cache_prompts()
+
+#cache_prompts_all
 
 

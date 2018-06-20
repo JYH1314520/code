@@ -35,13 +35,13 @@ def function_operation(request,operation):
                contacts = paginator.page(paginator.num_pages)
           rows = []
           for rec in contacts:
-               try:
+               #try:
                     rows.append({'function_id': rec.function_id, 'function_code': rec.function_code, 'function_name': rec.function_name,
-                                 'title': rec.title, 'parent_function_id': rec.parent_function_id, 'href': rec.href,'icon': rec.icon,
+                                 'parent_function_id': rec.parent_function_id, 'href': rec.href,'icon': rec.icon,
                                  'spread': rec.spread, 'url': rec.url,'function_type': rec.function_type,
                                  'enable_flag': rec.enable_flag})
-               except:
-                    rows.append({})
+               # except:
+               #      rows.append({})
 
           list = {"rows": rows, "total": functionLists.count(), "success": True}
           lists.append(list)
@@ -67,8 +67,8 @@ def function_operation(request,operation):
                data = request.body
                datajson = json.loads(data)
                for item in datajson:
-                    role_id = item['role_id']
-                    function.objects.filter(role_id=role_id).delete()
+                    function_id = item['function_id']
+                    function.objects.filter(function_id=function_id).delete()
                return HttpResponse(data)
 
      if operation == 'submit':
@@ -78,18 +78,24 @@ def function_operation(request,operation):
                heigh = 0
                rows = []
                for item in datajson:
-                    role_id = role_id = item['role_id']
-                    role_name = item['role_name']
-                    start_date = item['start_date']
-                    end_date = item['end_date']
-                    enable_flag = item['enable_flag']
-                    roledescription = item['roledescription']
-                    p = function.objects.get(role_id=role_id)
-                    p.role_name = role_name
-                    p.start_date = start_date
-                    p.roledescription = roledescription
-                    p.enable_flag = enable_flag
-                    p.end_date = end_date
+                    function_id = item['function_id']
+                    function_type = item['function_type']
+                    function_name = item['function_name']
+                    parent_function_id = item['parent_function_id']
+                    icon = item['icon']
+                    sequence = item['sequence']
+                    title = item['title']
+                    href = item['href']
+                    function_description = item['function_description']
+                    p = function.objects.get(function_id=function_id)
+                    p.function_type = function_type
+                    p.function_name = function_name
+                    p.parent_function_id = parent_function_id
+                    p.sequence = sequence
+                    p.icon = icon
+                    p.function_description = function_description
+                    p.href = href
+                    p.title = title
                     p.save()  # 保存
           return HttpResponse(data)
 def functionset(request):
